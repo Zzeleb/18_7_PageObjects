@@ -1,45 +1,35 @@
 package ru.zzeleb;
 
-import com.codeborne.selenide.Configuration;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
-public class PracticeFormPageObjectsTests {
-
-    @BeforeAll
-    static void setUp() {
-        Configuration.baseUrl = "https://demoqa.com";
-        Configuration.browserSize = "1920x1080";
-        Configuration.holdBrowserOpen = true;
-    }
+public class PracticeFormPageObjectsTests extends TestBase {
 
     @Test
     void fillFormTest() {
         String name = "Artem";
         String surname = "Zeleb";
-        String Email = "zeleb@inbox.ru";
-        String Number = "9042545658";
+        String email = "zeleb@inbox.ru";
+        String gender = "Male";
+        String number = "9042545658";
         String picture = "123.jpg";
         String subjects = "Maths";
         String hobby = "Reading";
         String address = "Nevskiy 5, 15";
 
-        open("/automation-practice-form");
-        executeJavaScript("$('footer').remove()");
-        executeJavaScript("$('#fixedban').remove()");
-        $("#firstName").setValue(name);
-        $("#lastName").setValue(surname);
-        $("#userEmail").setValue(Email);
-        $("#genterWrapper").$(byText("Male")).click();
-        $("#userNumber").setValue(Number);
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__year-select").selectOption("1985");
-        $(".react-datepicker__month-select").selectOption("October");
-        $(".react-datepicker__day--016").click();
+        registrationPage.openPage()
+                .setFirstName(name)
+                .setLastName(surname)
+                .setEmail(email)
+                .setGender(gender)
+                .setPhoneNumber(number)
+                .setBirthDate("16", "October", "1985");
+
+
+
         $("#subjectsInput").setValue(subjects).pressEnter();
         $$(".custom-control-label").findBy(text(hobby)).click();
         $("input#uploadPicture").uploadFromClasspath(picture);
@@ -50,16 +40,18 @@ public class PracticeFormPageObjectsTests {
         $("#stateCity-wrapper").$(byText("Karnal")).click();
         $("#submit").click();
 
-        $(".table-responsive").shouldHave(text(name));
-        $(".table-responsive").shouldHave(text(surname));
-        $(".table-responsive").shouldHave(text(Email));
-        $(".table-responsive").shouldHave(text("Male"));
-        $(".table-responsive").shouldHave(text(Number));
-        $(".table-responsive").shouldHave(text("16 October,1985"));
-        $(".table-responsive").shouldHave(text(subjects));
-        $(".table-responsive").shouldHave(text(hobby));
-        $(".table-responsive").shouldHave(text(picture));
-        $(".table-responsive").shouldHave(text(address));
-        $(".table-responsive").shouldHave(text("Haryana Karnal"));
+        registrationPage.verifyResultsModalAppears()
+                .verifyResult("Student Name", name +" " + surname)
+                .verifyResult("Student Email", email)
+                .verifyResult("Gender", gender)
+                .verifyResult("Mobile", number)
+                .verifyResult("Date of Birth", "16 October,1985")
+                .verifyResult("Subjects", subjects)
+                .verifyResult("Hobbies", hobby)
+                .verifyResult("Picture", picture)
+                .verifyResult("Address", address)
+                .verifyResult("State and City", "Haryana Karnal");
     }
+
+
 }
