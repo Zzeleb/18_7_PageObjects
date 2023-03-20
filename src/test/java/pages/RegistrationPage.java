@@ -4,34 +4,36 @@ import com.codeborne.selenide.SelenideElement;
 import pages.components.CalendarComponent;
 import pages.components.RegistrationResultsModal;
 
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class RegistrationPage {
 
-    private String TITLE_TEXT = "Student Registration Form";
-    private CalendarComponent calendarComponent = new CalendarComponent();
-    private RegistrationResultsModal registrationResultsModal = new RegistrationResultsModal();
-    private SelenideElement firstNameInput = $("#firstName");
-    private SelenideElement lastNameInput = $("#lastName");
-    private SelenideElement emailInput = $("#userEmail");
-    private SelenideElement dateOfBirthInput = $("#dateOfBirthInput");
-    private SelenideElement genderInput = $("#genterWrapper");
-    private SelenideElement numberInput = $("#userNumber");
-    private SelenideElement subjectInput = $("#subjectsInput");
-    private SelenideElement hobbyInput = $("#hobbiesWrapper");
-    private SelenideElement userPictureUpload = $("#uploadPicture");
-    private SelenideElement userAddressInput = $("#currentAddress");
-    private SelenideElement stateSelect = $("#state");
-    private SelenideElement citySelect = $("#city");
-    private SelenideElement setUserState = $("#stateCity-wrapper");
-    private SelenideElement setUserCity = $("#stateCity-wrapper");
-    private SelenideElement submitButton = $("#submit");
+    private final CalendarComponent calendarComponent = new CalendarComponent();
+    private final RegistrationResultsModal registrationResultsModal = new RegistrationResultsModal();
+    private final SelenideElement firstNameInput = $("#firstName");
+    private final SelenideElement lastNameInput = $("#lastName");
+    private final SelenideElement emailInput = $("#userEmail");
+    private final SelenideElement dateOfBirthInput = $("#dateOfBirthInput");
+    private final SelenideElement genderInput = $("#genterWrapper");
+    private final SelenideElement numberInput = $("#userNumber");
+    private final SelenideElement subjectInput = $("#subjectsInput");
+    private final SelenideElement hobbyInput = $("#hobbiesWrapper");
+    private final SelenideElement userPictureUpload = $("#uploadPicture");
+    private final SelenideElement userAddressInput = $("#currentAddress");
+    private final SelenideElement stateSelect = $("#state");
+    private final SelenideElement citySelect = $("#city");
+    private final SelenideElement setUserState = $("#stateCity-wrapper");
+    private final SelenideElement setUserCity = $("#stateCity-wrapper");
+    private final SelenideElement submitButton = $("#submit");
 
     public RegistrationPage openPage() {
         open("/automation-practice-form");
-        $(".practice-form-wrapper").shouldHave(text(TITLE_TEXT));
+
+        return this;
+    }
+
+    public RegistrationPage removeBanner() {
         executeJavaScript("$('footer').remove()");
         executeJavaScript("$('#fixedban').remove()");
 
@@ -57,7 +59,7 @@ public class RegistrationPage {
     }
 
     public RegistrationPage setGender(String value) {
-        genderInput.$(byText("Male")).click();
+        genderInput.$(byText(value)).click();
 
         return this;
     }
@@ -75,7 +77,7 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage setSubjects(String value) {
+    public RegistrationPage setSubject(String value) {
         subjectInput.setValue(value).pressEnter();
 
         return this;
@@ -99,9 +101,14 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage setUserStateCity(String state, String city) {
+    public RegistrationPage setUserState(String state) {
         stateSelect.click();
         setUserState.$(byText(state)).click();
+
+        return this;
+    }
+
+    public RegistrationPage setUserCity(String city) {
         citySelect.click();
         setUserCity.$(byText(city)).click();
 
