@@ -5,20 +5,29 @@ import pages.components.CalendarComponent;
 import pages.components.RegistrationResultsModal;
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 
 public class RegistrationPage {
 
-    private final String TITLE_TEXT = "Student Registration Form";
+    private String TITLE_TEXT = "Student Registration Form";
     private CalendarComponent calendarComponent = new CalendarComponent();
     private RegistrationResultsModal registrationResultsModal = new RegistrationResultsModal();
-    private SelenideElement
-            firstNameInput = $("#firstName"),
-            lastNameInput = $("#lastName"),
-            emailInput = $("#userEmail"),
-            dateOfBirthInput = $("#dateOfBirthInput");
-            //genderInput = $("#genterWrapper").$(byText("Male")).click();//??
+    private SelenideElement firstNameInput = $("#firstName");
+    private SelenideElement lastNameInput = $("#lastName");
+    private SelenideElement emailInput = $("#userEmail");
+    private SelenideElement dateOfBirthInput = $("#dateOfBirthInput");
+    private SelenideElement genderInput = $("#genterWrapper");
+    private SelenideElement numberInput = $("#userNumber");
+    private SelenideElement subjectInput = $("#subjectsInput");
+    private SelenideElement hobbyInput = $("#hobbiesWrapper");
+    private SelenideElement userPictureUpload = $("#uploadPicture");
+    private SelenideElement userAddressInput = $("#currentAddress");
+    private SelenideElement stateSelect = $("#state");
+    private SelenideElement citySelect = $("#city");
+    private SelenideElement setUserState = $("#stateCity-wrapper");
+    private SelenideElement setUserCity = $("#stateCity-wrapper");
+    private SelenideElement submitButton = $("#submit");
 
     public RegistrationPage openPage() {
         open("/automation-practice-form");
@@ -48,13 +57,13 @@ public class RegistrationPage {
     }
 
     public RegistrationPage setGender(String value) {
-        $("#genterWrapper").$(byText("Male")).click(); //move to selenide elements
+        genderInput.$(byText("Male")).click();
 
         return this;
     }
 
     public RegistrationPage setPhoneNumber(String value) {
-        $("#userNumber").setValue(value);//move to selenide elements
+        numberInput.setValue(value);
 
         return this;
     }
@@ -66,12 +75,50 @@ public class RegistrationPage {
         return this;
     }
 
+    public RegistrationPage setSubjects(String value) {
+        subjectInput.setValue(value).pressEnter();
+
+        return this;
+    }
+
+    public RegistrationPage setHobby(String value) {
+        hobbyInput.$(byText(value)).click();
+
+        return this;
+    }
+
+        public RegistrationPage setUserPicture(String value) {
+        userPictureUpload.uploadFromClasspath(value);
+
+        return this;
+    }
+
+    public RegistrationPage setUserAddress(String value) {
+        userAddressInput.setValue(value);
+
+        return this;
+    }
+
+    public RegistrationPage setUserStateCity(String state, String city) {
+        stateSelect.click();
+        setUserState.$(byText(state)).click();
+        citySelect.click();
+        setUserCity.$(byText(city)).click();
+
+        return this;
+    }
+
+    public RegistrationPage submitForm () {
+        submitButton.click();
+
+        return this;
+    }
+
     public RegistrationPage verifyResultsModalAppears() {
        registrationResultsModal.verifyModalAppears();
 
         return this;
     }
-
 
     public RegistrationPage verifyResult(String key, String value) {
         registrationResultsModal.verifyResult(key, value);

@@ -2,10 +2,6 @@ package ru.zzeleb;
 
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
-
 public class PracticeFormPageObjectsTests extends TestBase {
 
     @Test
@@ -19,6 +15,8 @@ public class PracticeFormPageObjectsTests extends TestBase {
         String subjects = "Maths";
         String hobby = "Reading";
         String address = "Nevskiy 5, 15";
+        String state = "Haryana";
+        String city = "Karnal";
 
         registrationPage.openPage()
                 .setFirstName(name)
@@ -26,19 +24,13 @@ public class PracticeFormPageObjectsTests extends TestBase {
                 .setEmail(email)
                 .setGender(gender)
                 .setPhoneNumber(number)
-                .setBirthDate("16", "October", "1985");
-
-
-
-        $("#subjectsInput").setValue(subjects).pressEnter();
-        $$(".custom-control-label").findBy(text(hobby)).click();
-        $("input#uploadPicture").uploadFromClasspath(picture);
-        $("#currentAddress").setValue(address);
-        $("#state").click();
-        $("#stateCity-wrapper").$(byText("Haryana")).click();
-        $("#city").click();
-        $("#stateCity-wrapper").$(byText("Karnal")).click();
-        $("#submit").click();
+                .setBirthDate("16", "October", "1985")
+                .setSubjects(subjects)
+                .setHobby(hobby)
+                .setUserPicture(picture)
+                .setUserAddress(address)
+                .setUserStateCity(state, city)
+                .submitForm();
 
         registrationPage.verifyResultsModalAppears()
                 .verifyResult("Student Name", name +" " + surname)
@@ -50,7 +42,7 @@ public class PracticeFormPageObjectsTests extends TestBase {
                 .verifyResult("Hobbies", hobby)
                 .verifyResult("Picture", picture)
                 .verifyResult("Address", address)
-                .verifyResult("State and City", "Haryana Karnal");
+                .verifyResult("State and City", state + " " + city);
     }
 
 
