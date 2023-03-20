@@ -1,10 +1,12 @@
 package ru.zzeleb;
 
 import org.junit.jupiter.api.Test;
+import pages.ModalPage;
 import pages.RegistrationPage;
 
 public class PracticeFormPageObjectsTests extends TestBase {
     RegistrationPage registrationPage = new RegistrationPage();
+    ModalPage modalPage = new ModalPage();
 
     @Test
     void fillFormTest() {
@@ -39,7 +41,7 @@ public class PracticeFormPageObjectsTests extends TestBase {
                 .setUserCity(city)
                 .submitForm();
 
-        registrationPage.verifyResultsModalAppears()
+        modalPage.verifyResultsModalAppears()
                 .verifyResult("Student Name", name +" " + surname)
                 .verifyResult("Student Email", email)
                 .verifyResult("Gender", gender)

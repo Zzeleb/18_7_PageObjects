@@ -2,7 +2,6 @@ package pages;
 
 import com.codeborne.selenide.SelenideElement;
 import pages.components.CalendarComponent;
-import pages.components.RegistrationResultsModal;
 
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
@@ -10,7 +9,6 @@ import static com.codeborne.selenide.Selenide.*;
 public class RegistrationPage {
 
     private final CalendarComponent calendarComponent = new CalendarComponent();
-    private final RegistrationResultsModal registrationResultsModal = new RegistrationResultsModal();
     private final SelenideElement firstNameInput = $("#firstName");
     private final SelenideElement lastNameInput = $("#lastName");
     private final SelenideElement emailInput = $("#userEmail");
@@ -115,21 +113,8 @@ public class RegistrationPage {
         return this;
     }
 
-    public RegistrationPage submitForm () {
+    public void submitForm () {
         submitButton.click();
 
-        return this;
-    }
-
-    public RegistrationPage verifyResultsModalAppears() {
-       registrationResultsModal.verifyModalAppears();
-
-        return this;
-    }
-
-    public RegistrationPage verifyResult(String key, String value) {
-        registrationResultsModal.verifyResult(key, value);
-
-        return this;
     }
 }
